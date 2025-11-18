@@ -71,7 +71,7 @@ class ApiService {
   }
 
   // === DASHBOARD RW ===
-  static Future<Map<String, dynamic>> getDashboardRW() async {
+  static Future<Map<String, dynamic>> getSuperAdminDashboard() async {
     try {
       final response = await http.get(
         Uri.parse("$baseUrl/warga/rw/dashboard"),
