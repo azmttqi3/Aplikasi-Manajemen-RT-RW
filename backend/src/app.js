@@ -1,5 +1,5 @@
 // src/app.js
-import express from "express";
+const express = require('express');
 import dotenv from "dotenv";
 import cors from "cors";
 import pool from "./config/db.js";

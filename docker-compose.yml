@@ -1,33 +1,25 @@
-version: "3.9"
+# File: docker-compose.yml
 services:
   db:
     image: postgres:15
     container_name: db_rtrw
+    env_file:             # <--- PASTIKAN BARIS INI ADA
+      - ./.env            # <--- DAN INI
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: karawang3
-      POSTGRES_DB: manajemen_rtrw2
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./database/manajemen_rtrw2.sql:/docker-entrypoint-initdb.d/init.sql
-      - db_data:/var/lib/postgresql/data
-    restart: always
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    # ...
 
   backend:
     build: ./backend
     container_name: backend_rtrw
     depends_on:
       - db
+    env_file:             # <--- PASTIKAN BARIS INI JUGA ADA
+      - ./.env            # <--- DAN INI
     environment:
-      - DATABASE_URL=postgresql://postgres:karawang3@db:5432/manajemen_rtrw2
-      - JWT_SECRET=supersecret123
-      - PORT=5000
-    ports:
-      - "5000:5000"
-    volumes:
-      - ./backend:/app
-    restart: always
-
-volumes:
-  db_data:
+      DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
+      JWT_SECRET: ${JWT_SECRET}
+      PORT: 5000
+    # ...
